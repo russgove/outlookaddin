@@ -66,16 +66,33 @@ export class App extends React.Component<AppProps, AppState> {
         debugger;
         this.authCtx = new adal(config);
         // this.authCtx.prototype._singletonInstance = undefined;
-        if (!this.state.oauth_id_token){
+        if (!this.state.oauth_id_token) {
             this.authCtx.login();
-        }else{
-            console.log("user is "+this.authCtx.getCachedUser());
+        } else {
+            console.log("user is " + this.authCtx.getCachedUser());
+            pnp.setup({
+                headers: {
+                    'Bearer': this.state.oauth_id_token,
+                },
+                baseUrl: "https://rgove3.sharepoint.com"
+
+            });
+            debugger;
+            pnp.sp.web.get().then((web)=>{
+                debugger;
+                console.log("GOT WEB "+web["Title"])
+            }).catch((err)=>{
+                debugger;
+                console.log("Error "+err)
+            });
         }
+
 
 
     }
 
     componentDidMount() {
+        debugger;
         this.authCtx.handleWindowCallback();
 
         if (window !== window.top) {
@@ -87,22 +104,7 @@ export class App extends React.Component<AppProps, AppState> {
             previousState.signedIn = !(!this.authCtx.getCachedUser());
             return previousState;
         });
-        this.setState({
-            listItems: [
-                {
-                    icon: "Ribbon",
-                    primaryText: "Achieve more with Office integration"
-                },
-                {
-                    icon: "Unlock",
-                    primaryText: "Unlock features and functionality"
-                },
-                {
-                    icon: "Design",
-                    primaryText: "Create and visualize like a pro"
-                }
-            ]
-        });
+
     }
 
     click = async () => {
@@ -113,7 +115,7 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     render() {
-        if (this.state.oauth_id_token===null){
+        if (this.state.oauth_id_token === null) {
             return <div>logging in , please wait.</div>
         }
         return (
