@@ -7,10 +7,10 @@ import './assets/styles/global.scss';
 (() => {
     const title = 'Git the Gist';
     const container = document.querySelector('#container');
-debugger;
+    //debugger;
     /* Render application after Office initializes */
     Office.initialize = () => {
-        debugger;
+    //    debugger;
         render(
             <App title={title} />,
             container

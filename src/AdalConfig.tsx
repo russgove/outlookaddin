@@ -3,10 +3,13 @@ const adalConfig: adal.Config = {
   tenant: 'common',
   extraQueryParameter: 'nux=1',
   endpoints: {
-    'https://graph.microsoft.com': 'https://graph.microsoft.com'
+    'https://rgove3.sharepoint.com': 'https://rgove3.sharepoint.com'
   },
   postLogoutRedirectUri: window.location.origin,
-  cacheLocation: 'sessionStorage'
+  cacheLocation: 'sessionStorage',
+  popUp: false,
+  navigateToLoginRequestUrl:false
+
 };
 
 export default adalConfig;
