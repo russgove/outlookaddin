@@ -65,28 +65,49 @@ export class App extends React.Component<AppProps, AppState> {
         };
         debugger;
         this.authCtx = new adal(config);
+        window["Logging"] = {
+            level: 10,
+            log: function (message) {
+              
+                console.log("ADAL MESSAGGE "+message);
+            }
+        };
         // this.authCtx.prototype._singletonInstance = undefined;
         if (!this.state.oauth_id_token) {
             this.authCtx.login();
         } else {
             console.log("user is " + this.authCtx.getCachedUser());
-              this.authCtx.handleWindowCallback();
-            const token=this.authCtx.acquireToken('f8f8d2ad-7c9d-4aac-80eb-3f00a263c879');
-            pnp.setup({
-                headers: {
-                    'Authorization':'Bearer '+ token,
-                },
-                baseUrl: "https://rgove3.sharepoint.com"
+            this.authCtx.handleWindowCallback();
+            this.authCtx.acquireToken('f8f8d2ad-7c9d-4aac-80eb-3f00a263c879', (error, token) => {
+                debugger;
+                if (error) {
+                    console.log(error);
+                    return;
+                }
+                pnp.setup({
+                    headers: {
+                        'Authorization': 'Bearer ' + token
 
-            });
-            debugger;
-            pnp.sp.web.lists.getByTitle('Contacts').items.get().then((items)=>{
+                    },
+                    baseUrl: "https://rgove3.sharepoint.com"
+
+                });
                 debugger;
-                console.log("GOT WEB "+items[0]["Title"]);
-            }).catch((err)=>{
-                debugger;
-                console.log("Error "+err)
+                pnp.sp.web.lists.getByTitle('Contacts').items.get().then((items) => {
+                    debugger;
+                    console.log("GOT WEB " + items[0]["Title"]);
+                }).catch((err1) => {
+                    debugger;
+                    pnp.sp.web.lists.getByTitle('Contacts').items.get().then((items) => {
+                        debugger;
+                        console.log("GOT WEB " + items[0]["Title"]);
+                    }).catch((err2) => {
+                        debugger;
+                        console.log("Error " + err2)
+                    });
+                });
             });
+
         }
 
 
