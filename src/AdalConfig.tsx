@@ -1,4 +1,5 @@
 const adalConfig: adal.Config = {
+  instance:'https://login.microsoftonline.com/',
   clientId: 'f8f8d2ad-7c9d-4aac-80eb-3f00a263c879',//this can only read greaph
   tenant: 'common',
   extraQueryParameter: 'nux=1',

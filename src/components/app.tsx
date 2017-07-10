@@ -70,17 +70,19 @@ export class App extends React.Component<AppProps, AppState> {
             this.authCtx.login();
         } else {
             console.log("user is " + this.authCtx.getCachedUser());
+              this.authCtx.handleWindowCallback();
+            const token=this.authCtx.acquireToken('f8f8d2ad-7c9d-4aac-80eb-3f00a263c879');
             pnp.setup({
                 headers: {
-                    'Bearer': this.state.oauth_id_token,
+                    'Authorization':'Bearer '+ token,
                 },
                 baseUrl: "https://rgove3.sharepoint.com"
 
             });
             debugger;
-            pnp.sp.web.get().then((web)=>{
+            pnp.sp.web.lists.getByTitle('Contacts').items.get().then((items)=>{
                 debugger;
-                console.log("GOT WEB "+web["Title"])
+                console.log("GOT WEB "+items[0]["Title"]);
             }).catch((err)=>{
                 debugger;
                 console.log("Error "+err)
