@@ -4,6 +4,7 @@ import { Header } from './header';
 import { HeroList, HeroListItem } from './hero-list';
 import * as pnp from 'sp-pnp-js';
 import * as adal from 'adal-angular';
+
 export interface AppProps {
     title: string;
 }
@@ -28,6 +29,31 @@ export class App extends React.Component<AppProps, AppState> {
             error: '',
             loading: false,
         };
+        var item = Office.context.mailbox.item;
+        var body = item.body;
+        // body.getAsync(
+        //     "text",
+        //     { asyncContext: "This is passed to the callback" },
+        //     function callback(result) {
+        //         debugger;
+        //     });
+        let bodytext:string="OKJH";
+   body.getAsync(
+            "text",
+            { asyncContext: "This is passed to the callback" },
+            (result)=> {
+                debugger;
+                bodytext=result;
+            }
+            
+            );
+
+
+        var attachments = item.attachments;
+        var firstAttachment = attachments[0];
+
+        var from = item.from;
+        var sender = from.emailAddress;
         const config: IAdalConfig = adalConfig;
         this.authCtx = new adal(config);
         window['Logging'] = {
@@ -36,7 +62,7 @@ export class App extends React.Component<AppProps, AppState> {
                 console.log('ADAL MESSAGGE ' + message);
             }
         };
-        
+
         if (!this.authCtx.isCallback(window.location.hash)) {
             this.authCtx.login();
         } else {
@@ -65,7 +91,7 @@ export class App extends React.Component<AppProps, AppState> {
             });
         }
     }
-    
+
     render() {
         debugger;
         if (this.authCtx.loginInProgress()) {
@@ -75,4 +101,5 @@ export class App extends React.Component<AppProps, AppState> {
             <div>logged in as {this.authCtx.getCachedUser().userName}</div>
         );
     };
+
 };
