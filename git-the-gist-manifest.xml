@@ -31,6 +31,7 @@
   <AppDomains>
     <AppDomain>login.windows.net</AppDomain>
     <AppDomain>rgove3.sharepint.com</AppDomain>
+    <AppDomain>outlook.office.com</AppDomain>
   </AppDomains>
   <!--End Basic Settings. -->
 
